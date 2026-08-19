@@ -28,6 +28,7 @@ body {
 button { font: inherit; }
 
 .timer-shell { width: min(1080px, 100%); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 .topbar, .brand, .controls, footer, .live-indicator {
   display: flex;
@@ -52,8 +53,22 @@ button { font: inherit; }
 .eyebrow, h1, .phase-label, .clock-caption { margin: 0; }
 .eyebrow { color: var(--muted); font-size: .7rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
 h1 { font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: -.04em; }
+h2 { margin: 2px 0 0; font-size: 1.15rem; }
 .live-indicator { gap: 9px; color: var(--muted); font-size: .88rem; font-weight: 700; }
 .live-indicator__dot { width: 9px; height: 9px; border-radius: 50%; background: #647184; }
+
+.settings-card { margin-bottom: 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 18px; background: rgba(24, 34, 49, .72); }
+.settings-card__heading, .settings-form, .settings-form fieldset { display: flex; align-items: end; gap: 14px; }
+.settings-card__heading { align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.settings-card__heading > p { margin: 0; color: var(--muted); font-size: .78rem; }
+.settings-form fieldset { flex: 1; margin: 0; padding: 0; border: 0; }
+.settings-form label { flex: 1; color: var(--muted); font-size: .75rem; font-weight: 750; }
+.settings-form label span { display: block; margin-bottom: 7px; }
+.settings-form input { width: 100%; min-height: 48px; padding: 0 13px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #0f1722; font: inherit; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.settings-form input:focus-visible { outline: 2px solid var(--fight); outline-offset: 2px; }
+.settings-form fieldset:disabled { opacity: .48; }
+.settings-message { min-height: 1em; margin: 9px 0 0; color: var(--break); font-size: .78rem; }
+.button--save { min-height: 48px; white-space: nowrap; }
 
 .clock-card {
   position: relative;
@@ -114,7 +129,10 @@ h1 { font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: -.04em; }
 [data-mode="round"] .clock-card { border-color: rgba(255, 176, 32, .32); background: linear-gradient(145deg, #211d17, var(--fight-deep)); }
 [data-mode="break"] { --mode-color: var(--break); --clock-color: #baffea; }
 [data-mode="break"] .clock-card { border-color: rgba(66, 211, 160, .32); background: linear-gradient(145deg, #102a25, var(--break-deep)); }
+[data-mode="finished"] { --mode-color: #ef596f; --clock-color: #ffdbe1; }
+[data-mode="finished"] .clock-card { border-color: rgba(239, 89, 111, .35); background: linear-gradient(145deg, #2b1820, #1d0a10); }
 [data-mode="round"] .live-indicator__dot, [data-mode="break"] .live-indicator__dot { background: var(--mode-color); box-shadow: 0 0 0 5px color-mix(in srgb, var(--mode-color) 18%, transparent); }
+[data-mode="finished"] .live-indicator__dot { background: var(--mode-color); }
 
 .controls { justify-content: center; gap: 12px; margin: 22px 0; }
 .button {
@@ -147,6 +165,11 @@ kbd { padding: 3px 6px; border: 1px solid var(--line); border-radius: 5px; color
   .topbar { margin-bottom: 12px; }
   .eyebrow { display: none; }
   .clock-card { min-height: 52vh; border-radius: 20px; }
+  .settings-card__heading { align-items: flex-start; }
+  .settings-card__heading > p { display: none; }
+  .settings-form, .settings-form fieldset { align-items: stretch; flex-wrap: wrap; }
+  .settings-form label { flex: 1 0 28%; }
+  .button--save { width: 100%; }
   .controls { flex-wrap: wrap; }
   .button--start { flex: 1 0 60%; }
   .button--pause { flex: 1 0 30%; }
