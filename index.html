@@ -24,8 +24,25 @@
         </div>
       </header>
 
+      <section class="settings-card" aria-labelledby="settingsTitle">
+        <div class="settings-card__heading">
+          <div><p class="eyebrow">Kampf konfigurieren</p><h2 id="settingsTitle">Timer-Einstellungen</h2></div>
+          <p>Änderungen gelten nach dem Speichern.</p>
+        </div>
+        <form class="settings-form" id="settingsForm">
+          <fieldset id="settingsFields">
+            <legend class="sr-only">Kampfdauer</legend>
+            <label><span>Minuten pro Runde</span><input id="roundMinutes" type="number" min="0" max="59" value="2" inputmode="numeric" required></label>
+            <label><span>Sekunden</span><input id="roundSeconds" type="number" min="0" max="59" value="0" inputmode="numeric" required></label>
+            <label><span>Anzahl der Runden</span><input id="totalRounds" type="number" min="1" max="99" value="3" inputmode="numeric" required></label>
+          </fieldset>
+          <button class="button button--save" id="saveSettingsButton" type="submit">Einstellungen speichern</button>
+        </form>
+        <p class="settings-message" id="settingsMessage" role="status"></p>
+      </section>
+
       <section class="clock-card" aria-labelledby="phaseLabel">
-        <div class="round-badge">RUNDE <strong id="roundNumber">1</strong></div>
+        <div class="round-badge">RUNDE <strong id="roundNumber">1</strong> / <strong id="totalRoundsDisplay">3</strong></div>
         <div class="clock-card__content">
           <p class="phase-label" id="phaseLabel">BEREIT FÜR DIE NÄCHSTE RUNDE</p>
           <time class="clock" id="clock" datetime="PT2M" aria-live="off">02:00</time>
