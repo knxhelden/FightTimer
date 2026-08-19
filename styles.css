@@ -92,6 +92,10 @@ h2 { margin: 2px 0 0; font-size: 1.15rem; }
 .settings-page .settings-card__heading { margin-bottom: 26px; }
 .settings-page .settings-form { display: grid; }
 .settings-page .settings-form fieldset { align-items: stretch; }
+.settings-page .settings-form__section { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding-top: 20px; border-top: 1px solid var(--line); }
+.settings-page .settings-form__section legend { grid-column: 1 / -1; padding: 0 0 12px; color: var(--ink); font-size: .9rem; font-weight: 800; }
+.settings-page .settings-form__section legend small { margin-left: 8px; color: var(--muted); font-size: .72rem; font-weight: 500; }
+.settings-page .settings-form__sounds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .settings-page .button--save { justify-self: start; margin-top: 6px; }
 
 .clock-card {
@@ -195,6 +199,9 @@ kbd { padding: 3px 6px; border: 1px solid var(--line); border-radius: 5px; color
   .settings-card__heading { align-items: flex-start; }
   .settings-card__heading > p { display: none; }
   .settings-form, .settings-form fieldset { align-items: stretch; flex-wrap: wrap; }
+  .settings-page .settings-form__section, .settings-page .settings-form__sounds { grid-template-columns: 1fr; }
+  .settings-page .settings-form__section legend { grid-column: 1; }
+  .settings-page .settings-form__section legend small { display: block; margin: 4px 0 0; }
   .settings-form label { flex: 1 0 28%; }
   .button--save { width: 100%; }
   .controls { flex-wrap: wrap; }
