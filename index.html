@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101722">
+    <title>FightTimer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="timer-shell" data-mode="ready">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">FT</span>
+          <div>
+            <p class="eyebrow">Fight night control</p>
+            <h1>FightTimer</h1>
+          </div>
+        </div>
+        <div class="live-indicator" id="liveIndicator">
+          <span class="live-indicator__dot" aria-hidden="true"></span>
+          <span id="statusText">Bereit</span>
+        </div>
+      </header>
+
+      <section class="clock-card" aria-labelledby="phaseLabel">
+        <div class="round-badge">RUNDE <strong id="roundNumber">1</strong></div>
+        <div class="clock-card__content">
+          <p class="phase-label" id="phaseLabel">BEREIT FÜR DIE NÄCHSTE RUNDE</p>
+          <time class="clock" id="clock" datetime="PT2M" aria-live="off">02:00</time>
+          <p class="clock-caption" id="clockCaption">Rundenzeit</p>
+        </div>
+        <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+      </section>
+
+      <section class="controls" aria-label="Timer-Steuerung">
+        <button class="button button--start" id="startButton" type="button">
+          <span class="button__icon" aria-hidden="true">▶</span>
+          <span id="startButtonText">Runde starten</span>
+        </button>
+        <button class="button button--pause" id="pauseButton" type="button" disabled>
+          <span class="button__icon" id="pauseIcon" aria-hidden="true">Ⅱ</span>
+          <span id="pauseButtonText">Pause</span>
+        </button>
+        <button class="button button--reset" id="resetButton" type="button">Zurücksetzen</button>
+      </section>
+
+      <footer>
+        <p><kbd>Leertaste</kbd> Start / nächste Runde</p>
+        <p><kbd>P</kbd> Pause</p>
+        <p><kbd>Esc</kbd> Zurücksetzen</p>
+      </footer>
+      <p class="audio-error" id="audioError" role="status"></p>
+    </main>
+  </body>
+</html>
