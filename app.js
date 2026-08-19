@@ -1,4 +1,10 @@
-const DEFAULT_CONFIG = { roundMinutes: 2, roundSeconds: 0, totalRounds: 3 };
+const DEFAULT_CONFIG = {
+  roundMinutes: 2, roundSeconds: 0, totalRounds: 3, warningSeconds: 10,
+  sounds: {
+    start: "round-start.mp3", warning: "ten-seconds.mp3",
+    end: "round-end.mp3", fightEnd: "fight-end.mp3"
+  }
+};
 
 const ui = {
   shell: document.querySelector(".timer-shell"), clock: document.querySelector("#clock"),
@@ -11,11 +17,9 @@ const ui = {
   audioError: document.querySelector("#audioError")
 };
 
-const sounds = {
-  start: new Audio("round-start.mp3"), warning: new Audio("ten-seconds.mp3"),
-  end: new Audio("round-end.mp3"), fightEnd: new Audio("fight-end.mp3")
-};
-Object.values(sounds).forEach((audio) => { audio.preload = "auto"; });
+function isValidFilename(value) {
+  return typeof value === "string" && value.trim() !== "" && !/[\\/]/.test(value);
+}
 
 function loadConfig() {
   try {
@@ -23,7 +27,20 @@ function loadConfig() {
     if (saved && Number.isInteger(saved.roundMinutes) && Number.isInteger(saved.roundSeconds)
       && Number.isInteger(saved.totalRounds) && saved.totalRounds >= 1 && saved.totalRounds <= 99
       && saved.roundMinutes >= 0 && saved.roundMinutes <= 59 && saved.roundSeconds >= 0
-      && saved.roundSeconds <= 59 && saved.roundMinutes * 60 + saved.roundSeconds > 0) return saved;
+      && saved.roundSeconds <= 59 && saved.roundMinutes * 60 + saved.roundSeconds > 0) {
+      const duration = saved.roundMinutes * 60 + saved.roundSeconds;
+      const candidate = {
+        ...DEFAULT_CONFIG,
+        ...saved,
+        warningSeconds: Number.isInteger(saved.warningSeconds)
+          ? saved.warningSeconds : Math.min(DEFAULT_CONFIG.warningSeconds, duration),
+        sounds: { ...DEFAULT_CONFIG.sounds, ...saved.sounds }
+      };
+      if (!Number.isInteger(candidate.warningSeconds) || candidate.warningSeconds < 1
+        || candidate.warningSeconds > duration
+        || !Object.values(candidate.sounds).every(isValidFilename)) return { ...DEFAULT_CONFIG };
+      return candidate;
+    }
   } catch (_) {
     // Invalid or unavailable storage simply falls back to the defaults.
   }
@@ -31,6 +48,9 @@ function loadConfig() {
 }
 
 let config = loadConfig();
+const sounds = Object.fromEntries(Object.entries(config.sounds)
+  .map(([cue, filename]) => [cue, new Audio(`sounds/${encodeURIComponent(filename)}`)]));
+Object.values(sounds).forEach((audio) => { audio.preload = "auto"; });
 let state = "ready";
 let roundNumber = 1;
 let remainingMs = getRoundDuration();
@@ -109,7 +129,7 @@ function tick(now) {
   anchorTime = now;
   if (state === "round") {
     remainingMs = Math.max(0, remainingMs - elapsed);
-    if (!warningPlayed && remainingMs <= 10000) { warningPlayed = true; playCue("warning"); }
+    if (!warningPlayed && remainingMs <= config.warningSeconds * 1000) { warningPlayed = true; playCue("warning"); }
     if (remainingMs === 0) {
       if (roundNumber >= config.totalRounds) { playCue("fightEnd"); state = "finished"; }
       else { playCue("end"); state = "break"; breakElapsedMs = 0; anchorTime = now; }
