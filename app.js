@@ -8,10 +8,7 @@ const ui = {
   start: document.querySelector("#startButton"), startText: document.querySelector("#startButtonText"),
   pause: document.querySelector("#pauseButton"), pauseText: document.querySelector("#pauseButtonText"),
   pauseIcon: document.querySelector("#pauseIcon"), reset: document.querySelector("#resetButton"),
-  audioError: document.querySelector("#audioError"), settingsForm: document.querySelector("#settingsForm"),
-  settingsFields: document.querySelector("#settingsFields"), roundMinutes: document.querySelector("#roundMinutes"),
-  roundSeconds: document.querySelector("#roundSeconds"), roundsInput: document.querySelector("#totalRounds"),
-  settingsMessage: document.querySelector("#settingsMessage"), saveSettings: document.querySelector("#saveSettingsButton")
+  audioError: document.querySelector("#audioError")
 };
 
 const sounds = {
@@ -68,8 +65,6 @@ function render() {
   ui.round.textContent = roundNumber;
   ui.totalRounds.textContent = config.totalRounds;
   ui.pause.disabled = state === "ready" || state === "finished";
-  ui.settingsFields.disabled = state === "round" || state === "break";
-  ui.saveSettings.disabled = state === "round" || state === "break";
   ui.pauseText.textContent = paused ? "Fortsetzen" : "Pause";
   ui.pauseIcon.textContent = paused ? "▶" : "Ⅱ";
 
@@ -148,27 +143,6 @@ function resetTimer() {
   paused = false; warningPlayed = false; ui.audioError.textContent = ""; render();
 }
 
-function saveSettings(event) {
-  event.preventDefault();
-  const next = {
-    roundMinutes: Number(ui.roundMinutes.value), roundSeconds: Number(ui.roundSeconds.value),
-    totalRounds: Number(ui.roundsInput.value)
-  };
-  if (!ui.settingsForm.checkValidity()) { ui.settingsForm.reportValidity(); return; }
-  if (next.roundMinutes * 60 + next.roundSeconds === 0) {
-    ui.settingsMessage.textContent = "Die Rundenzeit muss mindestens eine Sekunde betragen.";
-    return;
-  }
-  config = next;
-  try { localStorage.setItem("fightTimerConfig", JSON.stringify(config)); } catch (_) { /* Settings still apply for this session. */ }
-  ui.settingsMessage.textContent = "Einstellungen gespeichert.";
-  resetTimer();
-}
-
-ui.roundMinutes.value = config.roundMinutes;
-ui.roundSeconds.value = config.roundSeconds;
-ui.roundsInput.value = config.totalRounds;
-ui.settingsForm.addEventListener("submit", saveSettings);
 ui.start.addEventListener("click", startRound);
 ui.pause.addEventListener("click", togglePause);
 ui.reset.addEventListener("click", resetTimer);
