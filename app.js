@@ -10,6 +10,7 @@ const ui = {
   shell: document.querySelector(".timer-shell"), clock: document.querySelector("#clock"),
   phase: document.querySelector("#phaseLabel"), caption: document.querySelector("#clockCaption"),
   round: document.querySelector("#roundNumber"), totalRounds: document.querySelector("#totalRoundsDisplay"),
+  previousRound: document.querySelector("#previousRoundButton"), nextRound: document.querySelector("#nextRoundButton"),
   progress: document.querySelector("#progressBar"), status: document.querySelector("#statusText"),
   start: document.querySelector("#startButton"), startText: document.querySelector("#startButtonText"),
   pause: document.querySelector("#pauseButton"), pauseText: document.querySelector("#pauseButtonText"),
@@ -84,6 +85,8 @@ function render() {
   ui.shell.dataset.mode = state;
   ui.round.textContent = roundNumber;
   ui.totalRounds.textContent = config.totalRounds;
+  ui.previousRound.disabled = roundNumber <= 1;
+  ui.nextRound.disabled = roundNumber >= config.totalRounds;
   ui.pause.disabled = state === "ready" || state === "finished";
   ui.pauseText.textContent = paused ? "Fortsetzen" : "Pause";
   ui.pauseIcon.textContent = paused ? "▶" : "Ⅱ";
@@ -116,7 +119,7 @@ function render() {
     ui.clock.textContent = formatTime(getRoundDuration());
     ui.clock.dateTime = `PT${getRoundDuration() / 1000}S`;
     ui.phase.textContent = "BEREIT FÜR DIE NÄCHSTE RUNDE";
-    ui.caption.textContent = `${config.totalRounds} Runden · ${durationLabel()}`;
+    ui.caption.textContent = `Runde ${roundNumber} von ${config.totalRounds} · ${durationLabel()}`;
     ui.status.textContent = "Bereit";
     ui.startText.textContent = "Runde starten";
     ui.progress.style.transform = "scaleX(1)";
@@ -163,9 +166,22 @@ function resetTimer() {
   paused = false; warningPlayed = false; ui.audioError.textContent = ""; render();
 }
 
+function selectRound(offset) {
+  const selectedRound = Math.min(config.totalRounds, Math.max(1, roundNumber + offset));
+  if (selectedRound === roundNumber) return;
+
+  cancelAnimationFrame(animationFrame);
+  Object.values(sounds).forEach((audio) => { audio.pause(); audio.currentTime = 0; });
+  roundNumber = selectedRound;
+  state = "ready"; remainingMs = getRoundDuration(); breakElapsedMs = 0;
+  paused = false; warningPlayed = false; ui.audioError.textContent = ""; render();
+}
+
 ui.start.addEventListener("click", startRound);
 ui.pause.addEventListener("click", togglePause);
 ui.reset.addEventListener("click", resetTimer);
+ui.previousRound.addEventListener("click", () => selectRound(-1));
+ui.nextRound.addEventListener("click", () => selectRound(1));
 document.addEventListener("keydown", (event) => {
   if (event.repeat || event.target.matches("button, input")) return;
   if (event.code === "Space") { event.preventDefault(); startRound(); }

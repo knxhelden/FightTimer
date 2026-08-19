@@ -31,7 +31,15 @@
       </header>
 
       <section class="clock-card" aria-labelledby="phaseLabel">
-        <div class="round-badge">RUNDE <strong id="roundNumber">1</strong> / <strong id="totalRoundsDisplay">3</strong></div>
+        <div class="round-selector" aria-label="Runde auswählen">
+          <button class="round-selector__button" id="previousRoundButton" type="button" aria-label="Vorherige Runde" disabled>
+            <span aria-hidden="true">‹</span>
+          </button>
+          <div class="round-badge">RUNDE <strong id="roundNumber">1</strong> / <strong id="totalRoundsDisplay">3</strong></div>
+          <button class="round-selector__button" id="nextRoundButton" type="button" aria-label="Nächste Runde">
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
         <div class="clock-card__content">
           <p class="phase-label" id="phaseLabel">BEREIT FÜR DIE NÄCHSTE RUNDE</p>
           <time class="clock" id="clock" datetime="PT2M" aria-live="off">02:00</time>
