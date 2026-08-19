@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101722">
+    <title>Einstellungen · FightTimer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="settings.js" defer></script>
+  </head>
+  <body>
+    <main class="settings-page">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">FT</span>
+          <div><p class="eyebrow">Fight night control</p><h1>FightTimer</h1></div>
+        </div>
+        <a class="back-link" href="index.html">← Zurück zum Timer</a>
+      </header>
+
+      <section class="settings-card" aria-labelledby="settingsTitle">
+        <div class="settings-card__heading">
+          <div><p class="eyebrow">Kampf konfigurieren</p><h2 id="settingsTitle">Timer-Einstellungen</h2></div>
+          <p>Änderungen gelten nach dem Speichern.</p>
+        </div>
+        <form class="settings-form" id="settingsForm">
+          <fieldset>
+            <legend class="sr-only">Kampfdauer</legend>
+            <label><span>Minuten pro Runde</span><input id="roundMinutes" type="number" min="0" max="59" value="2" inputmode="numeric" required></label>
+            <label><span>Sekunden</span><input id="roundSeconds" type="number" min="0" max="59" value="0" inputmode="numeric" required></label>
+            <label><span>Anzahl der Runden</span><input id="totalRounds" type="number" min="1" max="99" value="3" inputmode="numeric" required></label>
+          </fieldset>
+          <button class="button button--save" type="submit">Einstellungen speichern</button>
+        </form>
+        <p class="settings-message" id="settingsMessage" role="status"></p>
+      </section>
+    </main>
+  </body>
+</html>
